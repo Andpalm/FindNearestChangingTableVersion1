@@ -29,6 +29,9 @@ namespace FindNearestChangingTableVersion1
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddDbContext<NewHorizonsDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("NewHorizonsConnection")));
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
