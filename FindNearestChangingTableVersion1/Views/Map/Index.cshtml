@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<div id="map"></div>
+
+<!-- <div id="form" >
+    <table>
+        <tr><td>Namn:</td> <td><input type='text' id='name' /> </td> </tr>
+        <tr><td>Adress:</td> <td><input type='text' id='address' /> </td> </tr>
+        <tr><td>Öppettider</td><td><input type="text" id="hours" /></td></tr>
+        <tr><td>Kommentar</td><td><input type="text" id="description" /></td></tr>
+        <tr><td></td><td><input type='button' value='Save' onclick='saveData()' /></td></tr>
+    </table>
+</div>
+    -->
+<div id="message" >Location saved</div>
+
+@section Scripts{
+    <script>
+        var map;
+        var marker;
+        var infowindow;
+        var messagewindow;
+
+        var messagewindowContent = '<div id="form" >' +
+            '<table>' +
+            "<tr><td>Namn:</td> <td><input type='text' id='name' /> </td> </tr>" +
+            "<tr><td>Adress:</td> <td><input type='text' id='address' /> </td> </tr>" +
+            '<tr><td>Öppettider</td><td><input type="text" id="hours" /></td></tr>' +
+            '<tr><td>Kommentar</td><td><input type="text" id="description" /></td></tr>' +
+            "<tr><td></td><td><input type='button' value='Save' onclick='saveData()' /></td></tr>" +
+            "</table>" +
+            "</div>";
+
+
+        function initMap() {
+            var malmo = { lat: 55.60617, lng: 13.00024 };
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: malmo,
+                zoom: 15
+            });
+
+            infowindow = new google.maps.InfoWindow({
+                content: messagewindowContent
+            });
+
+            messagewindow = new google.maps.InfoWindow({
+                content: document.getElementById('message')
+            });
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                marker = new google.maps.Marker({
+                    position: event.latLng,
+                    map: map
+                });
+
+
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.open(map, marker);
+                });
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnJWp2RVaxP6ISeBRVdte3KmwyUFyQETM&callback=initMap"
+            async defer></script>
+}
+
