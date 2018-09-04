@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using FindNearestChangingTableVersion1.Data;
 using FindNearestChangingTableVersion1.Models;
 using FindNearestChangingTableVersion1.Services;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace FindNearestChangingTableVersion1
 {
@@ -33,8 +34,29 @@ namespace FindNearestChangingTableVersion1
                 options.UseSqlServer(Configuration.GetConnectionString("NewHorizonsConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                 // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
+
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -43,8 +65,9 @@ namespace FindNearestChangingTableVersion1
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ServiceProvider serviceProvider)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
@@ -66,15 +89,24 @@ namespace FindNearestChangingTableVersion1
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            //CreateRoles(serviceProvider).Wait();
+            CreateRoles(serviceProvider).Wait();
         }
-        //public async Task CreateRoles(IServiceProvider serviceProvider)
-        //{
-        //    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        // In this method we will create default User roles and Admin user for login   
 
-        //    Task<bool> roleExist = roleManager.RoleExistsAsync("Admin");
-        //    roleExist.Wait();
+        public async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            //var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            //var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-        //}
+            //Task<bool> roleExist = roleManager.RoleExistsAsync("Admin");
+            //roleExist.Wait();
+            
+            //if (!roleExist.Result)
+            //{
+            //    Task<IdentityResult> roleResult = roleManager.CreateAsync(new IdentityRole("Admin"));
+            //    roleResult.Wait();
+            //}
+            
+        }
     }
 }
