@@ -1,0 +1,15 @@
+﻿@using FindNearestChangingTableVersion1.Models.AdminViewModels
+@model AdminIndexViewModel
+@{
+    ViewData["Title"] = "AdminView";
+}
+
+<h2>AdminView</h2>
+<h3>Lägg till en ny admin</h3>
+<form asp-action="AdminIndex" asp-controller="Admin">
+    <label asp-for="Email"></label>
+    <input asp-for="Email" />
+    <input type="submit" />
+    <div asp-validation-summary="All"></div>
+</form>
+

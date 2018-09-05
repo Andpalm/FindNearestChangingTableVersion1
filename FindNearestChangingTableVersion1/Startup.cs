@@ -38,7 +38,7 @@ namespace FindNearestChangingTableVersion1
 
             services.Configure<IdentityOptions>(options =>
             {
-                 // Password settings.
+                // Password settings.
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
@@ -65,7 +65,7 @@ namespace FindNearestChangingTableVersion1
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
 
             if (env.IsDevelopment())
@@ -91,22 +91,17 @@ namespace FindNearestChangingTableVersion1
             });
            // CreateRoles(serviceProvider).Wait();
         }
-        // In this method we will create default User roles and Admin user for login   
 
         public async Task CreateRoles(IServiceProvider serviceProvider)
         {
-            //var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            //var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            //Task<bool> roleExist = roleManager.RoleExistsAsync("Admin");
-            //roleExist.Wait();
-            
-            //if (!roleExist.Result)
-            //{
-            //    Task<IdentityResult> roleResult = roleManager.CreateAsync(new IdentityRole("Admin"));
-            //    roleResult.Wait();
-            //}
-            
+            var adminRole = await roleManager.FindByNameAsync("Admin");
+            if (adminRole == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+            }
         }
     }
 }
