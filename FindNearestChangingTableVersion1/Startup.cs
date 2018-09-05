@@ -34,7 +34,8 @@ namespace FindNearestChangingTableVersion1
                 options.UseSqlServer(Configuration.GetConnectionString("NewHorizonsConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders(); 
 
             services.Configure<IdentityOptions>(options =>
             {

@@ -4,6 +4,7 @@
     ViewData["Title"] = "AdminView";
 }
 
+
 <h2>AdminView</h2>
 <h3>Lägg till en ny admin</h3>
 <form asp-action="AdminIndex" asp-controller="Admin">
@@ -13,3 +14,4 @@
     <div asp-validation-summary="All"></div>
 </form>
 
+<p>@ViewData["Message"]</p>
