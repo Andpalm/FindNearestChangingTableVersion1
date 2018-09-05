@@ -8,16 +8,16 @@
 
 <div id="map"></div>
 
-<div id="message" >Location saved</div>
 
 @section Scripts{
     <script>
         var map;
         var marker;
-        var infowindow;
-        var messagewindow;
+        var infoWindow;
+        var messageWindow;
+        var inputWindow;
 
-        var infoWindowContent = '<div id="form" >' +
+        var inputWindowContent = '<div id="form" >' +
             '<table>' +
             "<tr><td>Namn:</td> <td><input type='text' id='name' /> </td> </tr>" +
             "<tr><td>Adress:</td> <td><input type='text' id='address' /> </td> </tr>" +
@@ -37,11 +37,13 @@
                 zoom: 15
             });
 
-            infowindow = new google.maps.InfoWindow({
-                content: infoWindowContent
+            infoWindow = new google.maps.InfoWindow();
+
+            inputWindow = new google.maps.InfoWindow({
+                content: inputWindowContent
             });
 
-            messagewindow = new google.maps.InfoWindow({
+            messageWindow = new google.maps.InfoWindow({
                 content: messageWindowContent
             });
 
@@ -51,22 +53,28 @@
                     map: map
                 });
 
-
                 google.maps.event.addListener(marker, 'click', function () {
-                    infowindow.open(map, marker);
+                    inputWindow.open(map, marker);
                 });
             });
 
             $.get("/Map/GetAllLocations")
                 .done(function (data) {
                     for (var i = 0; i < data.length; i++) {
-                        var marker = new google.maps.Marker({
+                        var idata = data[i];
+                        var pin = new google.maps.Marker({
                             position: getLatLngFromString(data[i].latLng),
-                            map: map
+                            map: map,
+                            title: data[i].name
                         });
+
+                        (function (pin, idata) {
+                            google.maps.event.addListener(pin, 'click', function (e) {
+                                infoWindow.setContent("<h4>" + idata.name + "</h4><h5>" + idata.address + "</h5><h5>" + idata.hours + "</h5><p>" + idata.description + "</p>");
+                                infoWindow.open(map, pin);
+                            });
+                        })(pin, idata);
                     }
-                    
-                    
                 });
         }
 
@@ -80,8 +88,8 @@
             $.get("/Map/AddLocationToMap/" + name + "/" + address + "/" + hours + "/" + description + "/" + latlng)
                 .done(function (data) {
                     if (data) {
-                        infowindow.close();
-                        messagewindow.open();
+                        inputWindow.close();
+                        messageWindow.open(map, marker);
                     }
                 });
         }
