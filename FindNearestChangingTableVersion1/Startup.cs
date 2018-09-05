@@ -65,7 +65,7 @@ namespace FindNearestChangingTableVersion1
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
             if (env.IsDevelopment())
@@ -89,7 +89,7 @@ namespace FindNearestChangingTableVersion1
                     name: "default",
                     template: "{controller=Map}/{action=Index}/{id?}");
             });
-            CreateRoles(serviceProvider).Wait();
+           // CreateRoles(serviceProvider).Wait();
         }
         // In this method we will create default User roles and Admin user for login   
 

@@ -16,5 +16,7 @@ namespace FindNearestChangingTableVersion1.Data
             : base(options)
         {
         }
+
+        public virtual DbSet<Markers> Markers { get; set; }
     }
 }
