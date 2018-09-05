@@ -90,7 +90,7 @@ namespace FindNearestChangingTableVersion1
                     name: "default",
                     template: "{controller=Map}/{action=Index}/{id?}");
             });
-            CreateRoles(serviceProvider).Wait();
+           // CreateRoles(serviceProvider).Wait();
         }
 
         public async Task CreateRoles(IServiceProvider serviceProvider)

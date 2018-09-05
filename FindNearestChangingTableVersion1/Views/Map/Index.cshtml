@@ -1,4 +1,5 @@
 ﻿
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -7,16 +8,6 @@
 
 <div id="map"></div>
 
-<!-- <div id="form" >
-    <table>
-        <tr><td>Namn:</td> <td><input type='text' id='name' /> </td> </tr>
-        <tr><td>Adress:</td> <td><input type='text' id='address' /> </td> </tr>
-        <tr><td>Öppettider</td><td><input type="text" id="hours" /></td></tr>
-        <tr><td>Kommentar</td><td><input type="text" id="description" /></td></tr>
-        <tr><td></td><td><input type='button' value='Save' onclick='saveData()' /></td></tr>
-    </table>
-</div>
-    -->
 <div id="message" >Location saved</div>
 
 @section Scripts{
@@ -26,15 +17,17 @@
         var infowindow;
         var messagewindow;
 
-        var messagewindowContent = '<div id="form" >' +
+        var infoWindowContent = '<div id="form" >' +
             '<table>' +
             "<tr><td>Namn:</td> <td><input type='text' id='name' /> </td> </tr>" +
             "<tr><td>Adress:</td> <td><input type='text' id='address' /> </td> </tr>" +
-            '<tr><td>Öppettider</td><td><input type="text" id="hours" /></td></tr>' +
-            '<tr><td>Kommentar</td><td><input type="text" id="description" /></td></tr>' +
+            '<tr><td>Öppettider:</td><td><input type="text" id="hours" /></td></tr>' +
+            '<tr><td>Kommentar: </td><td><textarea name="description" rows="5" cols="20" id="description" ></textarea></td></tr>' +
             "<tr><td></td><td><input type='button' value='Save' onclick='saveData()' /></td></tr>" +
             "</table>" +
             "</div>";
+
+        var messageWindowContent = "Platsen sparad"
 
 
         function initMap() {
@@ -45,11 +38,11 @@
             });
 
             infowindow = new google.maps.InfoWindow({
-                content: messagewindowContent
+                content: infoWindowContent
             });
 
             messagewindow = new google.maps.InfoWindow({
-                content: document.getElementById('message')
+                content: messageWindowContent
             });
 
             google.maps.event.addListener(map, 'click', function (event) {
@@ -63,6 +56,24 @@
                     infowindow.open(map, marker);
                 });
             });
+
+           
+        }
+
+        function saveData() {
+            var name = document.getElementById("name").value;
+            var address = document.getElementById("address").value;
+            var hours = document.getElementById("hours").value;
+            var description = document.getElementById("description").value;
+            var latlng = marker.getPosition();
+
+            $.get("/Map/AddLocationToMap/" + name + "/" + address + "/" + hours + "/" + description + "/" + latlng)
+                .done(function (data) {
+                    if (data) {
+                        infowindow.close();
+                        messagewindow.open();
+                    }
+                });
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnJWp2RVaxP6ISeBRVdte3KmwyUFyQETM&callback=initMap"
