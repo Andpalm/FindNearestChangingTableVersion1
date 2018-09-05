@@ -57,7 +57,17 @@
                 });
             });
 
-           
+            $.get("/Map/GetAllLocations")
+                .done(function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var marker = new google.maps.Marker({
+                            position: getLatLngFromString(data[i].latLng),
+                            map: map
+                        });
+                    }
+                    
+                    
+                });
         }
 
         function saveData() {
@@ -74,6 +84,13 @@
                         messagewindow.open();
                     }
                 });
+        }
+
+        function getLatLngFromString(jsonlatlng) {
+            var latlang = jsonlatlng.replace(/[()]/g, '');
+            var latlng = latlang.split(',');
+            locate = new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
+            return locate;
         }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnJWp2RVaxP6ISeBRVdte3KmwyUFyQETM&callback=initMap"
