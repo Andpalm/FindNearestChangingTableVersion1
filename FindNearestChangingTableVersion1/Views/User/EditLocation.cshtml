@@ -1,8 +1,53 @@
 ﻿@using FindNearestChangingTableVersion1.Models.UserViewModels
-@model EditLocationViewModel
+@model List<EditLocationViewModel>
 @{
     ViewData["Title"] = "EditLocation";
 }
 
 <h2>EditLocation</h2>
+<h3>@ViewData["Message"]</h3>
+
+@if (Model != null)
+{
+    <table class="table table-bordered table-responsive table-hover">
+        <tr>
+            <th>Namn</th>
+            <th>Adress</th>
+            <th>Öppettider</th>
+            <th>Beskrivning</th>
+            <th>Latitud/longitud</th>
+            <th></th>
+            <th></th>
+        </tr>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>@Model[i].Name</td>
+                <td>@Model[i].Adress</td>
+                <td>@Model[i].Hours</td>
+                <td>@Model[i].Description</td>
+                <td>@Model[i].LatLng</td>
+                <td><input type="button" value="Uppdatera" id="editButton" locID="@Model[i].ID " /></td>
+                <td><input type="button" value="Radera" id="deleteButton" locID="@Model[i].ID" /></td>
+            </tr>
+        }
+    </table>
+}
+@section Scripts{
+    <script>
+        $(function () {
+            $("input[type='button'][value='Radera']").click(function () {
+                var locID = $(this).attr("locID");
+                $.get("Delete/" + locID)
+                    .done(function (data) {
+                        if (data) {
+                            window.location.reload();
+                        }
+                    });
+            });
+
+        });
+    </script>
+}
+
 
