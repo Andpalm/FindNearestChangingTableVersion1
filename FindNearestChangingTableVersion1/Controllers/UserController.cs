@@ -20,10 +20,21 @@ namespace FindNearestChangingTableVersion1.Controllers
             this.context = context;
             this.userManager = userManager;
         }
+        [HttpGet]
         public IActionResult EditLocation()
         {
-            List<EditLocationViewModel> locationList = EditLocationViewModel.DisplayList(context); 
-            return View();
+            string userID = userManager.GetUserId(User);
+            List<EditLocationViewModel> locationList = EditLocationViewModel.DisplayList(context, userID);
+            if (locationList == null)
+                ViewData["Message"] = "Du har inte lagt till några locations";
+            return View(locationList);
+        }
+        [Route("User/Delete/{id}")]
+        [HttpGet]
+        public JsonResult Delete(int id)
+        {
+            bool locationDeleted = EditLocationViewModel.DeleteMarker(context, id);
+            return new JsonResult(locationDeleted);
         }
     }
 }
