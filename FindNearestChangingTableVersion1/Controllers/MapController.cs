@@ -24,8 +24,15 @@ namespace FindNearestChangingTableVersion1.Controllers
 
         public IActionResult Index()
         {
-            List<AddLocationToMapViewModel> addLocations = AddLocationToMapViewModel.GetAllLocations(context);
             return View();
+        }
+
+        [HttpGet]
+        [Route("Map/GetAllLocations")]
+        public JsonResult GetAllLocations()
+        {
+            List<AddLocationToMapViewModel> allLocations = AddLocationToMapViewModel.GetAllLocations(context);
+            return new JsonResult(allLocations);
         }
 
         [HttpGet]
