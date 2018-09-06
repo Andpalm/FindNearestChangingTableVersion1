@@ -5,136 +5,201 @@
 }
 
 <h2>Index</h2>
-@if (User.Identity.IsAuthenticated)
-{
-    <h2>Du är inloggad</h2>
-}
 
 <div id="map"></div>
 
 
 @section Scripts{
-    <script>
-        var map;
-        var marker;
-        var markers = [""];
-        var infoWindow;
-        var messageWindow;
-        var inputWindow;
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script>
+            var map;
+            var marker;
+            var markers = [""];
+            var infoWindow;
+            var messageWindow;
+            var inputWindow;
 
-        var inputWindowContent = '<div id="form" >' +
-            '<table>' +
-            "<tr><td>Namn:</td> <td><input type='text' maxlength='50' id='name' /> </td> </tr>" +
-            "<tr><td>Adress:</td> <td><input type='text' id='address' /> </td> </tr>" +
-            '<tr><td>Öppettider:</td><td><input type="text" id="hours" /></td></tr>' +
-            '<tr><td>Kommentar: </td><td><textarea name="description" rows="5" cols="20" id="description" ></textarea></td></tr>' +
-            "<tr><td></td><td><input type='button' value='Save' onclick='saveData()' /><input onclick='clearMarkers()' type=button value='Ta bort'></td></tr>" +
-            "</table>" +
-            "</div>";
+            var inputWindowContent = '<div id="form" >' +
+                '<table>' +
+                "<tr><td>Namn:</td> <td><input type='text' maxlength='50' id='name' /> </td> </tr>" +
+                "<tr><td>Adress:</td> <td><input type='text' id='address' /> </td> </tr>" +
+                '<tr><td>Öppettider:</td><td><input type="text" id="hours" /></td></tr>' +
+                '<tr><td>Kommentar: </td><td><textarea name="description" rows="5" cols="20" id="description" ></textarea></td></tr>' +
+                "<tr><td></td><td><input type='button' value='Save' onclick='saveData()' /><input onclick='clearMarkers()' type=button value='Ta bort'></td></tr>" +
+                "</table>" +
+                "</div>";
 
-        var messageWindowContent = "Platsen sparad"
+            var messageWindowContent = "Platsen sparad"
 
 
-        function initMap() {
-            var malmo = { lat: 55.60617, lng: 13.00024 };
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: malmo,
-                zoom: 15
-            });
+            function initMap() {
+                var malmo = { lat: 55.60617, lng: 13.00024 };
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: malmo,
+                    zoom: 15
+                });
 
-            infoWindow = new google.maps.InfoWindow();
+                infoWindow = new google.maps.InfoWindow();
 
-            inputWindow = new google.maps.InfoWindow({
-                content: inputWindowContent
-            });
+                inputWindow = new google.maps.InfoWindow({
+                    content: inputWindowContent
+                });
 
-            messageWindow = new google.maps.InfoWindow({
-                content: messageWindowContent
-            });
+                messageWindow = new google.maps.InfoWindow({
+                    content: messageWindowContent
+                });
 
-            google.maps.event.addListener(map, 'click', function (event) {
-                if (markers.length <= 1) {
-                    marker = new google.maps.Marker({
-                        position: event.latLng,
-                        map: map
-                    });
-
-                    google.maps.event.addListener(marker, 'click', function () {
-                        inputWindow.open(map, marker);
-                    });
-
-                    markers.push(marker);
-                }
-            });
-
-            $.get("/Map/GetAllLocations")
-                .done(function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        var idata = data[i];
-                        var pin = new google.maps.Marker({
-                            position: getLatLngFromString(data[i].latLng),
-                            map: map,
-                            title: data[i].name
+                google.maps.event.addListener(map, 'click', function (event) {
+                    if (markers.length <= 1) {
+                        marker = new google.maps.Marker({
+                            position: event.latLng,
+                            map: map
                         });
 
-                        (function (pin, idata) {
-                            google.maps.event.addListener(pin, 'click', function (e) {
-                                infoWindow.setContent("<h4>" + idata.name + "</h4><h5>" + idata.address + "</h5><h5>" + idata.hours + "</h5><p>" + idata.description + "</p>");
-                                infoWindow.open(map, pin);
+                        google.maps.event.addListener(marker, 'click', function () {
+                            inputWindow.open(map, marker);
+                        });
+
+                        markers.push(marker);
+                    }
+                });
+
+                $.get("/Map/GetAllLocations")
+                    .done(function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            var idata = data[i];
+                            var pin = new google.maps.Marker({
+                                position: getLatLngFromString(data[i].latLng),
+                                map: map,
+                                title: data[i].name
                             });
-                        })(pin, idata);
-                    }
-                });
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
 
-                    map.setCenter(pos);
-                }, function () {
-                });
+                            (function (pin, idata) {
+                                google.maps.event.addListener(pin, 'click', function (e) {
+                                    infoWindow.setContent("<h4>" + idata.name + "</h4><h5>" + idata.address + "</h5><h5>" + idata.hours + "</h5><p>" + idata.description + "</p>");
+                                    infoWindow.open(map, pin);
+                                });
+                            })(pin, idata);
+                        }
+                    });
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+
+                        map.setCenter(pos);
+                    }, function () {
+                    });
+                }
             }
-        }
 
-        function saveData() {
-            var name = document.getElementById("name").value;
-            var address = document.getElementById("address").value;
-            var hours = document.getElementById("hours").value;
-            var description = document.getElementById("description").value;
-            var latlng = marker.getPosition();
+            function saveData() {
+                var name = document.getElementById("name").value;
+                var address = document.getElementById("address").value;
+                var hours = document.getElementById("hours").value;
+                var description = document.getElementById("description").value;
+                var latlng = marker.getPosition();
 
-            $.get("/Map/AddLocationToMap/" + name + "/" + address + "/" + hours + "/" + description + "/" + latlng)
-                .done(function (data) {
-                    if (data) {
-                        inputWindow.close();
-                        messageWindow.open(map, marker);
-                    }
+                $.get("/Map/AddLocationToMap/" + name + "/" + address + "/" + hours + "/" + description + "/" + latlng)
+                    .done(function (data) {
+                        if (data) {
+                            inputWindow.close();
+                            messageWindow.open(map, marker);
+                        }
+                    });
+            }
+
+            function getLatLngFromString(jsonlatlng) {
+                var latlang = jsonlatlng.replace(/[()]/g, '');
+                var latlng = latlang.split(',');
+                locate = new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
+                return locate;
+            }
+
+            function clearMarkers() {
+                initMap();
+                markers = [];
+            }
+
+            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                infoWindow.setPosition(pos);
+                infoWindow.setContent(browserHasGeolocation ?
+                    'Error: The Geolocation service failed.' :
+                    'Error: Your browser doesn\'t support geolocation.');
+                infoWindow.open(map);
+            }
+        </script>
+    }
+
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <script>
+            var map;
+            var infoWindow;
+
+            function initMap() {
+                var malmo = { lat: 55.60617, lng: 13.00024 };
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: malmo,
+                    zoom: 15
                 });
-        }
 
-        function getLatLngFromString(jsonlatlng) {
-            var latlang = jsonlatlng.replace(/[()]/g, '');
-            var latlng = latlang.split(',');
-            locate = new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
-            return locate;
-        }
+                infoWindow = new google.maps.InfoWindow();
 
-        function clearMarkers() {
-            initMap();
-            markers = [];
-        }
+                $.get("/Map/GetAllLocations")
+                    .done(function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            var idata = data[i];
+                            var pin = new google.maps.Marker({
+                                position: getLatLngFromString(data[i].latLng),
+                                map: map,
+                                title: data[i].name
+                            });
 
-        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-            infoWindow.setPosition(pos);
-            infoWindow.setContent(browserHasGeolocation ?
-                'Error: The Geolocation service failed.' :
-                'Error: Your browser doesn\'t support geolocation.');
-            infoWindow.open(map);
-        }
+                            (function (pin, idata) {
+                                google.maps.event.addListener(pin, 'click', function (e) {
+                                    infoWindow.setContent("<h4>" + idata.name + "</h4><h5>" + idata.address + "</h5><h5>" + idata.hours + "</h5><p>" + idata.description + "</p>");
+                                    infoWindow.open(map, pin);
+                                });
+                            })(pin, idata);
+                        }
+                    });
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
 
-    </script>
+                        map.setCenter(pos);
+                    }, function () {
+                    });
+                }
+            }
+
+            function getLatLngFromString(jsonlatlng) {
+                var latlang = jsonlatlng.replace(/[()]/g, '');
+                var latlng = latlang.split(',');
+                locate = new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
+                return locate;
+            }
+
+            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                infoWindow.setPosition(pos);
+                infoWindow.setContent(browserHasGeolocation ?
+                    'Error: The Geolocation service failed.' :
+                    'Error: Your browser doesn\'t support geolocation.');
+                infoWindow.open(map);
+            }
+
+        </script>
+
+    }
+
+    
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnJWp2RVaxP6ISeBRVdte3KmwyUFyQETM&callback=initMap"
             async defer></script>
 }
