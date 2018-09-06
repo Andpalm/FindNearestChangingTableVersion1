@@ -5,10 +5,10 @@
 }
 
 <h2>Index</h2>
-
-<div id="floating-panel">
-    <input onclick="clearMarkers();" type=button value="Ta bort markeringar">
-</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <h2>Du är inloggad</h2>
+}
 
 <div id="map"></div>
 
@@ -17,17 +17,18 @@
     <script>
         var map;
         var marker;
+        var markers = [""];
         var infoWindow;
         var messageWindow;
         var inputWindow;
 
         var inputWindowContent = '<div id="form" >' +
             '<table>' +
-            "<tr><td>Namn:</td> <td><input type='text' id='name' /> </td> </tr>" +
+            "<tr><td>Namn:</td> <td><input type='text' maxlength='50' id='name' /> </td> </tr>" +
             "<tr><td>Adress:</td> <td><input type='text' id='address' /> </td> </tr>" +
             '<tr><td>Öppettider:</td><td><input type="text" id="hours" /></td></tr>' +
             '<tr><td>Kommentar: </td><td><textarea name="description" rows="5" cols="20" id="description" ></textarea></td></tr>' +
-            "<tr><td></td><td><input type='button' value='Save' onclick='saveData()' /></td></tr>" +
+            "<tr><td></td><td><input type='button' value='Save' onclick='saveData()' /><input onclick='clearMarkers()' type=button value='Ta bort'></td></tr>" +
             "</table>" +
             "</div>";
 
@@ -52,14 +53,18 @@
             });
 
             google.maps.event.addListener(map, 'click', function (event) {
-                marker = new google.maps.Marker({
-                    position: event.latLng,
-                    map: map
-                });
+                if (markers.length <= 1) {
+                    marker = new google.maps.Marker({
+                        position: event.latLng,
+                        map: map
+                    });
 
-                google.maps.event.addListener(marker, 'click', function () {
-                    inputWindow.open(map, marker);
-                });
+                    google.maps.event.addListener(marker, 'click', function () {
+                        inputWindow.open(map, marker);
+                    });
+
+                    markers.push(marker);
+                }
             });
 
             $.get("/Map/GetAllLocations")
@@ -90,7 +95,7 @@
                     map.setCenter(pos);
                 }, function () {
                 });
-            } 
+            }
         }
 
         function saveData() {
@@ -118,6 +123,7 @@
 
         function clearMarkers() {
             initMap();
+            markers = [];
         }
 
         function handleLocationError(browserHasGeolocation, infoWindow, pos) {
