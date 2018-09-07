@@ -53,5 +53,22 @@ namespace FindNearestChangingTableVersion1.Models.UserViewModels
                 locationDeleted = false;
             return locationDeleted;
         }
+        internal static bool UpdateMarker(NewHorizonsDBContext context, EditLocationViewModel model)
+        {
+            bool locationUpdated;
+            var location = context.Markers.Where(l => l.ID == model.ID).FirstOrDefault();
+            if (location != null)
+            {
+                location.Name = model.Name;
+                location.Hours = model.Hours;
+                location.Adress = model.Adress;
+                location.Description = model.Description;
+                context.SaveChanges();
+                locationUpdated = true;
+            }
+            else
+                locationUpdated = false;
+            return locationUpdated;
+        }
     }
 }

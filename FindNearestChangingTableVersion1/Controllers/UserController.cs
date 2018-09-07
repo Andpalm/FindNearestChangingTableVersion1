@@ -26,7 +26,7 @@ namespace FindNearestChangingTableVersion1.Controllers
             string userID = userManager.GetUserId(User);
             List<EditLocationViewModel> locationList = EditLocationViewModel.DisplayList(context, userID);
             if (locationList == null)
-                ViewData["Message"] = "Du har inte lagt till några locations";
+                ViewData["Message"] = "Du har inte lagt till några skötbord";
             return View(locationList);
         }
         [Route("User/Delete/{id}")]
@@ -35,6 +35,16 @@ namespace FindNearestChangingTableVersion1.Controllers
         {
             bool locationDeleted = EditLocationViewModel.DeleteMarker(context, id);
             return new JsonResult(locationDeleted);
+        }
+        [Route("User/Update/{locID}/{newName}/{newAdress}/{newHours}/{newDescription}")]
+        [HttpGet]
+        public JsonResult Update(int locID, string newName, string newAdress, string newHours, string newDescription)
+        {
+            EditLocationViewModel model = new EditLocationViewModel()
+            { ID = locID, Name = newName, Adress = newAdress, Hours = newHours, Description = newDescription};
+            bool locationUpdated = EditLocationViewModel.UpdateMarker(context, model);
+
+            return new JsonResult(locationUpdated);
         }
     }
 }
