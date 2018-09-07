@@ -9,31 +9,31 @@
 
 @if (Model != null)
 {
-    <table class="table table-bordered table-responsive table-hover">
+    <table id="table" class="table table-bordered table-responsive table-hover">
         <tr>
             <th>Namn</th>
             <th>Adress</th>
             <th>Öppettider</th>
             <th>Beskrivning</th>
-            <th>Latitud/longitud</th>
             <th></th>
             <th></th>
         </tr>
         @for (int i = 0; i < Model.Count; i++)
         {
             <tr>
-                <td>@Model[i].Name</td>
-                <td>@Model[i].Adress</td>
-                <td>@Model[i].Hours</td>
-                <td>@Model[i].Description</td>
-                <td>@Model[i].LatLng</td>
-                <td><input type="button" value="Uppdatera" id="editButton" locID="@Model[i].ID " /></td>
+                <td class="edit">@Model[i].Name</td>
+                <td class="edit">@Model[i].Adress</td>
+                <td class="edit">@Model[i].Hours</td>
+                <td class="edit">@Model[i].Description</td>
+
+                <td><input type="button" value="Uppdatera" class="editButton"/><input class="saveButton" locID="@Model[i].ID" type="button" hidden="hidden" value="Spara"  /></td>
                 <td><input type="button" value="Radera" id="deleteButton" locID="@Model[i].ID" /></td>
             </tr>
         }
     </table>
 }
 @section Scripts{
+
     <script>
         $(function () {
             $("input[type='button'][value='Radera']").click(function () {
@@ -47,7 +47,37 @@
             });
 
         });
+        $(function () {
+            $(".editButton").click(function () {
+                $(this).hide();
+                $(this).siblings(".saveButton").show();
+                var par = $(this).parent().parent();
+                var tdName = par.children("td:nth-child(1)");
+                var tdAdress = par.children("td:nth-child(2)");
+                var tdHours = par.children("td:nth-child(3)");
+                var tdDescription = par.children("td:nth-child(4)");
+
+                tdName.html("<input type='text' id='inputName' value='" + tdName.html() + "'/>");
+                tdAdress.html("<input type='text' id='inputAdress' value='" + tdAdress.html() + "'/>");
+                tdHours.html("<input type='text' id='inputHours' value='" + tdHours.html() + "'/>");
+                tdDescription.html("<input type='text' id='inputDescription' value='" + tdDescription.html() + "'/>");
+                                                                          
+                $(".saveButton").click(function () {
+                    var locID = $(this).attr("locID");
+                    $(this).siblings(".editButton").show();
+                    $(this).hide();
+                    var newName = document.getElementById("inputName").value;
+                    var newAdress = document.getElementById("inputAdress").value;
+                    var newHours = document.getElementById("inputHours").value;
+                    var newDescription = document.getElementById("inputDescription").value;
+                    $.get("Update/" + locID + "/" + newName + "/" + newAdress + "/" + newHours + "/" + newDescription)
+                        .done(function (data) {
+                            if (data) {
+                                window.location.reload();
+                            }
+                        });
+                });
+            });
+        });
     </script>
 }
-
-
