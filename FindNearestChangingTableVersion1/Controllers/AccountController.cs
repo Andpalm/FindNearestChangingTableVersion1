@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using FindNearestChangingTableVersion1.Models;
 using FindNearestChangingTableVersion1.Models.AccountViewModels;
 using FindNearestChangingTableVersion1.Services;
+using System.Net.Mail;
 
 namespace FindNearestChangingTableVersion1.Controllers
 {
@@ -227,18 +228,27 @@ namespace FindNearestChangingTableVersion1.Controllers
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    // https://localhost:44339/Account/ConfirmEmail?userId=b3ba5d58-1aed-43c1-b690-b0f9fb14a6b2&code=CfDJ8KcRcHlbSdRLp3%2BOjfl%2B8WFAUlM1M2e%2BjYbzkTwUrgBFpxG6tQnns8AShLaxUpHPl%2BCKZwTAKX1ZXdjzeNoe3v3v5NOBtu6DNqgZk1siPScKbJtCmYdm7HM7ntBKE8%2BX9vVWxS26Fv%2BaZWMkmPQrZ8QBLN0wlnj2HiNbu1Og2bp9rkiETrag1s7%2BcMTuf5hAPT73Eyc7HyKW8h2KkNBW7Ew8vSghx4fxqGnmIsBSj3kZKb3IQmWbiH0h9HkdBbFUyA%3D%3D
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    //return RedirectToLocal(returnUrl);
+                    return RedirectToAction("ConfirmEmailInBrowser");
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ConfirmEmailInBrowser()
+        {
+            return View();
         }
 
         [HttpPost]

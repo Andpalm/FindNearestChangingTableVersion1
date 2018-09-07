@@ -35,7 +35,7 @@ namespace FindNearestChangingTableVersion1
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders(); 
+                .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -46,6 +46,8 @@ namespace FindNearestChangingTableVersion1
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 1;
+
+                options.SignIn.RequireConfirmedEmail = true;
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -90,7 +92,7 @@ namespace FindNearestChangingTableVersion1
                     name: "default",
                     template: "{controller=Map}/{action=Index}/{id?}");
             });
-           // CreateRoles(serviceProvider).Wait();
+            // CreateRoles(serviceProvider).Wait();
         }
 
         public async Task CreateRoles(IServiceProvider serviceProvider)

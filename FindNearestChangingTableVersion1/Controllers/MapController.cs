@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FindNearestChangingTableVersion1.Data;
 using FindNearestChangingTableVersion1.Models;
 using FindNearestChangingTableVersion1.Models.MapViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,6 +37,7 @@ namespace FindNearestChangingTableVersion1.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("Map/AddLocationToMap/{name}/{address}/{hours}/{description}/{latlng}")]
         public bool AddLocationToMap(string name, string address, string hours, string description, string latlng)
         {
