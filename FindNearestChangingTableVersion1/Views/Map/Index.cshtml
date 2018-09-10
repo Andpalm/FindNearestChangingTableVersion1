@@ -15,7 +15,7 @@
         <script>
             var map;
             var marker;
-            var markers = [""];
+            var markers = [];
             var infoWindow;
             var messageWindow;
             var inputWindow;
@@ -30,7 +30,7 @@
                 "</table>" +
                 "</div>";
 
-            var messageWindowContent = "Platsen sparad"
+            var messageWindowContent = "Platsen sparad";
 
 
             function initMap() {
@@ -51,7 +51,7 @@
                 });
 
                 google.maps.event.addListener(map, 'click', function (event) {
-                    if (markers.length <= 1) {
+                    if (markers.length == 0) {
                         marker = new google.maps.Marker({
                             position: event.latLng,
                             map: map
@@ -69,9 +69,12 @@
                     .done(function (data) {
                         for (var i = 0; i < data.length; i++) {
                             var idata = data[i];
+
                             var pin = new google.maps.Marker({
                                 position: getLatLngFromString(data[i].latLng),
                                 map: map,
+                                animation: google.maps.Animation.DROP,
+                                icon: "/images/SkötbordMarker.png",
                                 title: data[i].name
                             });
 
@@ -83,6 +86,7 @@
                             })(pin, idata);
                         }
                     });
+
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                         var pos = {
@@ -120,8 +124,11 @@
             }
 
             function clearMarkers() {
-                initMap();
+                for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(null);
+                }
                 markers = [];
+                initMap();
             }
 
             function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -156,6 +163,7 @@
                             var pin = new google.maps.Marker({
                                 position: getLatLngFromString(data[i].latLng),
                                 map: map,
+                                icon: "/images/SkötbordMarker.png",
                                 title: data[i].name
                             });
 
