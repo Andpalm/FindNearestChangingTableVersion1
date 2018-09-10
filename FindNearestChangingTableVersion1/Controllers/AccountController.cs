@@ -257,7 +257,7 @@ namespace FindNearestChangingTableVersion1.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(MapController.Index), "Map");
         }
 
         [HttpPost]
@@ -345,7 +345,7 @@ namespace FindNearestChangingTableVersion1.Controllers
         {
             if (userId == null || code == null)
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(MapController.Index), "Home");
             }
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -465,7 +465,7 @@ namespace FindNearestChangingTableVersion1.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(MapController.Index), "Map");
             }
         }
 
