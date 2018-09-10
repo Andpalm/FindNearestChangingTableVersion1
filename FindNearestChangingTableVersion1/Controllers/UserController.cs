@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FindNearestChangingTableVersion1.Data;
 using FindNearestChangingTableVersion1.Models;
 using FindNearestChangingTableVersion1.Models.UserViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,9 @@ namespace FindNearestChangingTableVersion1.Controllers
             this.context = context;
             this.userManager = userManager;
         }
+
         [HttpGet]
+        [Authorize]
         public IActionResult EditLocation()
         {
             string userID = userManager.GetUserId(User);
