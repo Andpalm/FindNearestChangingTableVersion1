@@ -18,7 +18,7 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav style="height: 70px; background-color: #7e9988; "  class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -27,22 +27,24 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Map" asp-action="Index" class="navbar-brand">FindNearestChangingTableVersion1</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                    <img style="max-width:230px; margin-top: -70px; margin-left:20px"; src="~/images/SkötbordLogoNamn.png" /> 
+                </a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav"style="margin-top: 18px;">
                     @if(User.Identity.IsAuthenticated)
                     {
                         <li><a asp-area="" asp-controller="User" asp-action="EditLocation">Redigera</a></li>
                     }
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About" style="color:black; font-size:large; font-weight:bold;">About</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Contact" style="color:black; font-size:large; font-weight:bold;">Contact</a></li>
                     <li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             @if (User.IsInRole("Admin"))
                             {
-                                <a asp-area="" asp-controller="Admin" asp-action="AdminIndex">Admin Page</a>
+                                <a asp-area="" asp-controller="Admin" asp-action="AdminIndex" style="color:black;font-size:large; font-weight:bold;">Admin</a>
                             }
                         }
                     </li>
@@ -55,7 +57,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - FindNearestChangingTableVersion1</p>
+            <p>&copy; 2018 - Sköt dig själv</p>
         </footer>
     </div>
 
