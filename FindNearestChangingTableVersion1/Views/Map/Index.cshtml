@@ -70,20 +70,41 @@
                         for (var i = 0; i < data.length; i++) {
                             var idata = data[i];
 
-                            var pin = new google.maps.Marker({
-                                position: getLatLngFromString(data[i].latLng),
-                                map: map,
-                                animation: google.maps.Animation.DROP,
-                                icon: "/images/SkötbordMarker.png",
-                                title: data[i].name
-                            });
+                            setTimeout((function (i) {
+                                return function () {
 
-                            (function (pin, idata) {
-                                google.maps.event.addListener(pin, 'click', function (e) {
-                                    infoWindow.setContent("<h4>" + idata.name + "</h4><h5>" + idata.address + "</h5><h5>" + idata.hours + "</h5><p>" + idata.description + "</p>");
-                                    infoWindow.open(map, pin);
-                                });
-                            })(pin, idata);
+                                    var pin = new google.maps.Marker({
+                                        position: getLatLngFromString(data[i].latLng),
+                                        map: map,
+                                        animation: google.maps.Animation.DROP,
+                                        icon: "/images/SkötbordMarker.png",
+                                        title: data[i].name
+                                    });
+
+                                    (function (pin) {
+                                        google.maps.event.addListener(pin, 'click', function (e) {
+                                            infoWindow.setContent("<h4>" + data[i].name + "</h4><h5>" + data[i].address + "</h5><h5>" + data[i].hours + "</h5><p>" + data[i].description + "</p>");
+                                            infoWindow.open(map, pin);
+                                        });
+                                    })(pin, idata);
+
+                                };
+                            })(i), i * 100);
+
+                            //var pin = new google.maps.Marker({
+                            //    position: getLatLngFromString(data[i].latLng),
+                            //    map: map,
+                            //    animation: google.maps.Animation.DROP,
+                            //    icon: "/images/SkötbordMarker.png",
+                            //    title: data[i].name
+                            //});
+
+                            //(function (pin, idata) {
+                            //    google.maps.event.addListener(pin, 'click', function (e) {
+                            //        infoWindow.setContent("<h4>" + idata.name + "</h4><h5>" + idata.address + "</h5><h5>" + idata.hours + "</h5><p>" + idata.description + "</p>");
+                            //        infoWindow.open(map, pin);
+                            //    });
+                            //})(pin, idata);
                         }
                     });
 

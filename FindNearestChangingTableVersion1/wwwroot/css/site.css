@@ -2,15 +2,14 @@
     padding-top: 50px;
     padding-bottom: 20px;
     font-family: 'Muli', sans-serif;
-    background-color: #D1E1E8;
-    /*background-image: url('../images/brightdesignwood.jpg');
+    background-image: url('../images/yellowpattern.png');
     background-repeat: repeat;
-    background-size: cover;*/
 }
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
+    padding-top: 50px;
     padding-left: 15px;
     padding-right: 15px;
 }
