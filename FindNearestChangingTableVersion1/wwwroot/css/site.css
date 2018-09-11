@@ -2,13 +2,14 @@
     padding-top: 50px;
     padding-bottom: 20px;
     font-family: 'Muli', sans-serif;
-    background-image: url('../images/3984a153.png');
+    background-image: url('../images/yellowpattern.png');
     background-repeat: repeat;
 }
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
+    padding-top: 50px;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -25,6 +26,10 @@
 #map {
     height: 100%;
     min-height: 500px;
+}
+
+#table {
+    background-color: #7e9988;
 }
 
 
