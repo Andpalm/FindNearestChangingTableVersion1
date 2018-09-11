@@ -79,7 +79,8 @@
                                         position: getLatLngFromString(data[i].latLng),
                                         map: map,
                                         animation: google.maps.Animation.DROP,
-                                        icon: "/images/SkötbordMarker.png",
+                                        icon: "/images/logoMarker.png",
+
                                         title: data[i].name
                                     });
 
@@ -106,6 +107,14 @@
                         };
 
                         map.setCenter(pos);
+
+                        var userMarker = new google.maps.Marker({
+                            position: pos,
+                            title: 'Your Location',
+                            map: map,
+                            icon: "/images/UserLocation.png"
+                        });
+                        map.setContent(userMarker);
                     }, function () {
                     });
                 }

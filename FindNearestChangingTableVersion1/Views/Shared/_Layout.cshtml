@@ -32,8 +32,9 @@
                 </a>
             </div>
             <div class="navbar-collapse collapse" style="background-color:#119979">
-                <ul class="nav navbar-nav"style="margin-top: 18px;">
-                    @if(User.Identity.IsAuthenticated)
+                <ul class="nav navbar-nav" style="margin-top: 18px;">
+                    <li><a asp-area="" asp-controller="Map" asp-action="Index" style="color:black; font-size:large; font-weight:bold;">Karta</a></li>
+                    @if (User.Identity.IsAuthenticated)
                     {
                         <li><a asp-area="" asp-controller="User" asp-action="EditLocation" style="color:black; font-size:large; font-weight:bold;">Dina platser</a></li>
                     }
