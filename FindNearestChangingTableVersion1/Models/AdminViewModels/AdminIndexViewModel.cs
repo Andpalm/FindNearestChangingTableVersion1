@@ -23,5 +23,19 @@ namespace FindNearestChangingTableVersion1.Models.AdminViewModels
         {
             this.userManager = userManager;
         }
+        internal static bool DeleteUser(ApplicationDbContext context, AdminIndexViewModel model)
+        {
+            bool userDeleted;
+            var user = context.Users.Where(l => l.Email == model.Email).FirstOrDefault();
+            if (user != null)
+            {
+                context.Remove(user);
+                context.SaveChanges();
+                userDeleted = true;
+            }
+            else
+                userDeleted = false;
+            return userDeleted;
+        }
     }
 }

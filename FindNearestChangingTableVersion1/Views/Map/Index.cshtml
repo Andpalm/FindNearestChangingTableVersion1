@@ -106,6 +106,8 @@
                             //    });
                             //})(pin, idata);
                         }
+                    }).fail(function (err) {
+                        console.log(err);
                     });
 
                 if (navigator.geolocation) {
@@ -134,6 +136,8 @@
                             inputWindow.close();
                             messageWindow.open(map, marker);
                         }
+                    }).fail(function (err) {
+                        console.log(err);
                     });
             }
 
@@ -195,7 +199,10 @@
                                 });
                             })(pin, idata);
                         }
+                    }).fail(function (err) {
+                        console.log(err);
                     });
+
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                         var pos = {
