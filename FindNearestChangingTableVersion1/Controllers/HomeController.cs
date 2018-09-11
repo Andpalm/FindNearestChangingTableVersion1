@@ -12,14 +12,14 @@ namespace FindNearestChangingTableVersion1.Controllers
     {
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "I like cats!";
 
             return View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Kontakta oss";
+            ViewData["Message"] = "";
 
             return View();
         }
