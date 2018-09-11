@@ -40,14 +40,16 @@
                     zoom: 15
                 });
 
-                infoWindow = new google.maps.InfoWindow();
+                infoWindow = new google.maps.InfoWindow({ maxWidth: 200});
 
                 inputWindow = new google.maps.InfoWindow({
-                    content: inputWindowContent
+                    content: inputWindowContent,
+                    maxWidth: 200
                 });
 
                 messageWindow = new google.maps.InfoWindow({
-                    content: messageWindowContent
+                    content: messageWindowContent,
+                    maxWidth: 200
                 });
 
                 google.maps.event.addListener(map, 'click', function (event) {
