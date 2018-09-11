@@ -54,5 +54,20 @@ namespace FindNearestChangingTableVersion1.Controllers
 
             return newLocation.AddLocationToMap(context);
         }
+
+        [HttpGet]
+        [Route("Map/NearestLocations")]
+        public IActionResult NearestLocations()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("Map/FindNearestLocations")]
+        public JsonResult FindNearestLocations()
+        {
+            List<AddLocationToMapViewModel> allLocations = AddLocationToMapViewModel.GetAllLocations(context);
+            return new JsonResult(allLocations);
+        }
     }
 }

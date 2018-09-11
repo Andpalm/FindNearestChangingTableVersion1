@@ -33,6 +33,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav"style="margin-top: 18px;">
+                    <li><a asp-area="" asp-controller="Map" asp-action="NearestLocations" style="color:black; font-size:large; font-weight:bold;">Närmast dig</a></li>
                     @if(User.Identity.IsAuthenticated)
                     {
                         <li><a asp-area="" asp-controller="User" asp-action="EditLocation" style="color:black; font-size:large; font-weight:bold;">Redigera</a></li>
