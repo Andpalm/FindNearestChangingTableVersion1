@@ -11,7 +11,7 @@ namespace FindNearestChangingTableVersion1.Models.AdminViewModels
     public class AdminIndexViewModel
     {
         [Display(Name = "Email")]
-        [Required(ErrorMessage = "Du måste email på användaren som ska tilldelas Admin rättigheter")]
+        [Required(ErrorMessage = "Du måste ange email på användaren som ska tilldelas admin rättigheter")]
         public string Email { get; set; }
         
 
