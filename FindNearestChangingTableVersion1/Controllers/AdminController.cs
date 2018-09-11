@@ -87,5 +87,34 @@ namespace FindNearestChangingTableVersion1.Controllers
             else
                 return View("AdminIndex");
         }
+        [HttpPost]
+        public IActionResult RemoveAdmin(AdminIndexViewModel model)
+        {
+            bool correctModel = TryValidateModel(model);
+            if (correctModel)
+            {
+                if (model != null)
+                {
+                    bool adminRemoved = AdminIndexViewModel.RemoveAdmin(context, model);
+                    if (adminRemoved)
+                    {
+                        ViewData["Message"] = $"{model.Email} har fråntagits adminrättigheter";
+                        return View("AdminIndex");
+                    }
+                    else
+                    {
+                        ViewData["Message"] = $"Antingen finns användaren {model.Email} eller så saknar den adminrättigheter";
+                        return View("AdminIndex");
+                    }
+                }
+                else
+                {
+                    ViewData["Message"] = "Något gick fel försök igen";
+                    return View("AdminIndex");
+                }
+            }
+            else
+                return View("AdminIndex");
+        }
     }
 }

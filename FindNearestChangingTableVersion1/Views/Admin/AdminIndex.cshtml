@@ -6,14 +6,21 @@
 
 
 <h2>Admin</h2>
-<h3>Lägg till en ny admin</h3>
+<h4>Lägg till en ny admin</h4>
 <form asp-action="AddAdmin" asp-controller="Admin">
     <label asp-for="Email"></label>
     <input asp-for="Email" />
     <input type="submit" />
     <div asp-validation-summary="All"></div>
 </form>
-<h3>Ta bort användare</h3>
+<h4>Ta bort adminrättighet från användare</h4>
+<form asp-action="RemoveAdmin" asp-controller="Admin">
+    <label asp-for="Email"></label>
+    <input asp-for="Email" />
+    <input type="submit" />
+    <div asp-validation-summary="All"></div>
+</form>
+<h4>Ta bort användare</h4>
 <form asp-action="DeleteUser" asp-controller="Admin">
     <label asp-for="Email"></label>
     <input asp-for="Email" />
@@ -21,4 +28,4 @@
     <div asp-validation-summary="All"></div>
 </form>
 
-<p>@ViewData["Message"]</p>
+<h4>@ViewData["Message"]</h4>
