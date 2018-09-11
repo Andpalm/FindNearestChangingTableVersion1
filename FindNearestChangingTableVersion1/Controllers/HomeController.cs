@@ -19,7 +19,7 @@ namespace FindNearestChangingTableVersion1.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Kontakta oss";
 
             return View();
         }
