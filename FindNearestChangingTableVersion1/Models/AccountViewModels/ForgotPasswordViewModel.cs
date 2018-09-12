@@ -10,6 +10,7 @@ namespace FindNearestChangingTableVersion1.Models.AccountViewModels
     {
         [Required]
         [EmailAddress]
+        [Display(Name ="E-postadress")]
         public string Email { get; set; }
     }
 }

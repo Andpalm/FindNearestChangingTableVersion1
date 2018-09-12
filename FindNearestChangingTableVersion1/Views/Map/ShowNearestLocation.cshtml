@@ -21,7 +21,7 @@
         var name = $("#name").val();
         var address = $("#address").val();
         var hours = $("#hours").val();
-        var desciption = $("#description").val();
+        var description = $("#description").val();
         var destination = $("#destination").val();
 
         function initMap() {
@@ -33,24 +33,58 @@
 
             infoWindow = new google.maps.InfoWindow();
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
+            let tempPosition = sessionStorage.getItem("userPosition");
 
-                    map.setCenter(pos);
-
+            if (tempPosition) {
+                userLocation = getLatLngFromString(tempPosition);
+                map.setCenter(userLocation);
+                new google.maps.Marker({
+                    position: userLocation,
+                    title: 'Your Location',
+                    map: map,
+                    icon: "/images/UserLocation.png"
+                });
+            }
+            else {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                        sessionStorage.setItem("userPosition", userLocation);
+                        new google.maps.Marker({
+                            position: userLocation,
+                            title: 'Your Location',
+                            map: map,
+                            icon: "/images/UserLocation.png"
+                        });
+                    });
+                }
+                else {
+                    userLocation = new google.maps.LatLng(55.60617, 13.00024);
+                    sessionStorage.setItem("userPosition", userLocation);
                     new google.maps.Marker({
-                        position: pos,
+                        position: userLocation,
                         title: 'Your Location',
                         map: map,
                         icon: "/images/UserLocation.png"
                     });
-                }, function () {
-                });
+                }
             }
+
+            //if (navigator.geolocation) {
+            //    navigator.geolocation.getCurrentPosition(function (position) {
+            //        var userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    
+            //        map.setCenter(userLocation);
+
+            //        new google.maps.Marker({
+            //            position: userLocation,
+            //            title: 'Your Location',
+            //            map: map,
+            //            icon: "/images/UserLocation.png"
+            //        });
+            //    }, function () {
+            //    });
+            //}
 
             var pin = new google.maps.Marker({
                 position: getLatLngFromString(destination),
