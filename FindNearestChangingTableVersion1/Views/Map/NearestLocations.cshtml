@@ -19,7 +19,7 @@
 </div>
 
 @section Scripts{
-    <script src="https://maps.googleapis.com/maps/api/js?&libraries=geometry&key=AIzaSyDnJWp2RVaxP6ISeBRVdte3KmwyUFyQETM" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?&libraries=geometry&key=AIzaSyDnJWp2RVaxP6ISeBRVdte3KmwyUFyQETM&callback=test" async defer></script>
 
     <script>
 
@@ -28,23 +28,35 @@
         var distance;
         var sortedLocations = [];
 
-        $(function () {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    userPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                });
+        function test() {
+            // Retrieve
+            let tempPosition = sessionStorage.getItem("userPosition");
+
+            if (tempPosition) {
+                userPosition = getLatLngFromString(tempPosition);
+                getNearest();
             }
             else {
-                userPosition = new google.maps.LatLng(55.60617, 13.00024);
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        userPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                        sessionStorage.setItem("userPosition", userPosition);
+                        getNearest();
+                    });
+                }
+                else {
+                    userPosition = new google.maps.LatLng(55.60617, 13.00024);
+                    sessionStorage.setItem("userPosition", userPosition);
+                    console.log("position failed!");
+                    getNearest();
+                }
             }
-            getNearest();
-        });
+        }
 
         function getNearest() {
             $.get("/Map/FindNearestLocations")
                 .done(function (result) {
                     for (var i = 0; i < result.length; i++) {
-
                         getDistance = google.maps.geometry.spherical.computeDistanceBetween(userPosition, getLatLngFromString(result[i].latLng));
                         var location = { name: result[i].name, address: result[i].address, hours: result[i].hours, description: result[i].description, distance: getDistance, position: result[i].LatLng };
                         locations.push(location);
