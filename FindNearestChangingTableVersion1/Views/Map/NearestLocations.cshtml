@@ -6,48 +6,66 @@
 <h2>De 5 närmsta platserna</h2>
 
 <div id="nearest" class="table-responsive, container-fluid">
-    <table class="table table-bordered table-hover" >
+    <table class="table table-bordered table-hover">
         <tr class="d-flex">
             <th>Namn</th>
             <th>Adress</th>
             <th>Öppettid</th>
             <th>Kommentar</th>
             <th>Avstånd</th>
+            <th></th>
         </tr>
     </table>
 </div>
 
 @section Scripts{
+    <script src="https://maps.googleapis.com/maps/api/js?&libraries=geometry&key=AIzaSyDnJWp2RVaxP6ISeBRVdte3KmwyUFyQETM" async defer></script>
+
     <script>
+
         var userPosition;
         var locations = [];
         var distance;
         var sortedLocations = [];
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                userPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            });
-        }
+        $(function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    userPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                });
+            }
+            else {
+                userPosition = new google.maps.LatLng(55.60617, 13.00024);
+            }
+            getNearest();
+        });
+
         function getNearest() {
             $.get("/Map/FindNearestLocations")
                 .done(function (result) {
                     for (var i = 0; i < result.length; i++) {
+
                         getDistance = google.maps.geometry.spherical.computeDistanceBetween(userPosition, getLatLngFromString(result[i].latLng));
-                        var location = { name: result[i].name, address: result[i].address, hours:result[i].hours, description: result[i].description, distance: getDistance };
+                        var location = { name: result[i].name, address: result[i].address, hours: result[i].hours, description: result[i].description, distance: getDistance, position: result[i].LatLng };
                         locations.push(location);
                         //locations.push("<tr><td></td><td></td><td></td><td></td><td>" + Math.round(distance) + " m </td></tr>");
                     }
                     sortedLocations = locations.sort(compare);
                     for (var j = 0; j < sortedLocations.length; j++) {
                         if (j < 5) {
-                            $("table").append("<tr class='d-flex'><td>" + sortedLocations[j].name + "</td><td>" + sortedLocations[j].address + "</td><td>"+ sortedLocations[j].hours +"<td>" + sortedLocations[j].description + "</td><td>" + Math.round(sortedLocations[j].distance) + " m </td></tr>");
+                            $("table").append("<tr class='d-flex'><td>" + sortedLocations[j].name + "</td><td>" + sortedLocations[j].address + "</td><td>" + sortedLocations[j].hours + "<td>" + sortedLocations[j].description + "</td><td>" + Math.round(sortedLocations[j].distance) + " m </td><td><input type='button' value='Visa på karta' id=" + j + "></td></tr>");
                         }
                     }
                 });
 
 
         }
+
+        $("button").click(function () {
+            var index = $(this).attr("id");
+            dataToSend = sortedLocations[index];
+            $.get("/Map/ShowNearestLocation/" + dataToSend.name + "/" + dataToSend.address + "/" + dataToSend.hours + "/" + dataToSend.description + "/" + dataToSend.position);
+        });
 
         function compare(a, b) {
             // Use toUpperCase() to ignore character casing
@@ -70,8 +88,10 @@
             locate = new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
             return locate;
         }
+
+
+
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?&libraries=geometry&key=AIzaSyDnJWp2RVaxP6ISeBRVdte3KmwyUFyQETM&callback=getNearest"
-            async defer></script>
+
 }
 
