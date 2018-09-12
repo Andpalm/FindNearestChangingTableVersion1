@@ -71,7 +71,7 @@ namespace FindNearestChangingTableVersion1.Controllers
         }
 
         [HttpGet]
-        [Route("Map/ShowNearestLocation/{name}/{address}/{hours}/{description}/{latlng}")]
+        [Route("Map/ShowNearestLocation/{name}/{address}/{hours}/{description}/{position}")]
         public IActionResult ShowNearestLocation(string name, string address, string hours, string description, string position)
         {
             AddLocationToMapViewModel nearestLocation = new AddLocationToMapViewModel()

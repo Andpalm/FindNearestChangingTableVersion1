@@ -8,9 +8,84 @@
 
 <div id="map"></div>
 
+<input type="hidden" value="@Model.Name" id="name" />
+<input type="hidden" value="@Model.Address" id="address" />
+<input type="hidden" value="@Model.Hours" id="hours" />
+<input type="hidden" value="@Model.Description" id="description" />
+<input type="hidden" value="@Model.LatLng" id="destination" />
+
 @section Scripts{
+    <script>
+        var map;
+        var infoWindow;
+        var name = $("#name").val();
+        var address = $("#address").val();
+        var hours = $("#hours").val();
+        var desciption = $("#description").val();
+        var destination = $("#destination").val();
 
+        function initMap() {
+            var malmo = { lat: 55.60617, lng: 13.00024 };
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: malmo,
+                zoom: 15
+            });
 
+            infoWindow = new google.maps.InfoWindow();
 
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    map.setCenter(pos);
+
+                    new google.maps.Marker({
+                        position: pos,
+                        title: 'Your Location',
+                        map: map,
+                        icon: "/images/UserLocation.png"
+                    });
+                }, function () {
+                });
+            }
+
+            var pin = new google.maps.Marker({
+                position: getLatLngFromString(destination),
+                map: map,
+                animation: google.maps.Animation.DROP,
+                icon: "/images/logoMarker.png",
+                title: name
+            });
+
+            pin.addListener('click', function () {
+                    infoWindow.setContent("<h4>" + name + "</h4><h5>" + address + "</h5><h5>" + hours + "</h5><p>" + description + "</p>");
+                    infoWindow.open(map, pin);
+            });
+            
+
+        }
+
+        function getLatLngFromString(jsonlatlng) {
+            var latlang = jsonlatlng.replace(/[()]/g, '');
+            var latlng = latlang.split(',');
+            locate = new google.maps.LatLng(parseFloat(latlng[0]), parseFloat(latlng[1]));
+            return locate;
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnJWp2RVaxP6ISeBRVdte3KmwyUFyQETM&callback=initMap"
+            async defer></script>
 }
 
