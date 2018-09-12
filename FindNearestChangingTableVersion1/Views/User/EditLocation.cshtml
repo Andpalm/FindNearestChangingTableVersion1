@@ -8,30 +8,34 @@
 
 @if (Model != null)
 {
-<div class=" table-responsive, container-fluid">
-    <table id="table" class="table table-bordered table-hover">
-        <tr class="d-flex">
-            <th>Namn</th>
-            <th>Adress</th>
-            <th>Öppettider</th>
-            <th>Beskrivning</th>
-            <th></th>
-            <th></th>
-        </tr>
-        @for (int i = 0; i < Model.Count; i++)
-        {
-            <tr class="d-flex">
-                <td class="edit">@Model[i].Name</td>
-                <td class="edit">@Model[i].Adress</td>
-                <td class="edit">@Model[i].Hours</td>
-                <td class="edit">@Model[i].Description</td>
+    <div class=" table-responsive, container-fluid">
+        <table id="tableEdit" class="table table-bordered table-hover">
+            <thead class="theadEdit">
+                <tr class="d-flex trEdit">
+                    <th class="thEdit">Namn</th>
+                    <th class="thEdit">Adress</th>
+                    <th class="thEdit">Öppettider</th>
+                    <th class="thEdit">Beskrivning</th>
+                    <th class="thEdit"></th>
+                    <th class="thEdit"></th>
+                </tr>
+            </thead>
+            <tbody class="tbodyEdit">
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr class="d-flex trEdit">
+                        <td class="tdEdit">@Model[i].Name</td>
+                        <td class="tdEdit">@Model[i].Adress</td>
+                        <td class="tdEdit">@Model[i].Hours</td>
+                        <td class="tdEdit">@Model[i].Description</td>
 
-                <td><input type="button" value="Uppdatera" class="editButton" /><input class="saveButton" locID="@Model[i].ID" type="button" hidden="hidden" value="Spara" /></td>
-                <td><input type="button" value="Radera" id="deleteButton" locID="@Model[i].ID" /></td>
-            </tr>
-        }
-    </table>
-</div>
+                        <td class="tdEdit"><input type="button" value="Uppdatera" class="editButton" /><input class="saveButton" locID="@Model[i].ID" type="button" hidden="hidden" value="Spara" /></td>
+                        <td class="tdEdit"><input type="button" value="Radera" id="deleteButton" locID="@Model[i].ID" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 @section Scripts{
 
@@ -62,7 +66,7 @@
                 tdAdress.html("<input type='text' id='inputAdress' value='" + tdAdress.html() + "'/>");
                 tdHours.html("<input type='text' id='inputHours' value='" + tdHours.html() + "'/>");
                 tdDescription.html("<input type='text' id='inputDescription' value='" + tdDescription.html() + "'/>");
-                                                                          
+
                 $(".saveButton").click(function () {
                     var locID = $(this).attr("locID");
                     $(this).siblings(".editButton").show();

@@ -30,14 +30,38 @@
     border-color: black;
     border-width: 1px;
 }
+
+#tableEdit {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.thEdit {
+    background: #333;
+    color: white;
+    font-weight: bold;
+}
+
+.tdEdit, .thEdit {
+    padding: 6px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
 @media screen and (max-width: 500px) {
     #map {
         min-height: 500px;
     }
+
     body {
         padding-top: 35px;
     }
+
+    #editTable {
+        display: block;
+    }
 }
+
 @media screen and (max-width: 400px) {
     #map {
         min-height: 400px;
@@ -48,6 +72,72 @@
     }
 }
 
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
 
+    /* Force table to not be like tables anymore */
+    #tableEdit, .theadEdit, .tbodyEdit, .thEdit, .tdEdit, .trEdit {
+        display: block !important;
+    }
 
+        /* Hide table headers (but not display: none;, for accessibility) */
+        .theadEdit .trEdit {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
 
+    .trEdit {
+        border: 1px solid #ccc;
+    }
+
+    .tdEdit {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+    }
+
+        .tdEdit:before {
+            /* Now like a table header */
+            /* Top/left values mimic padding */
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+        /*
+	Label the data
+	*/
+        .tdEdit:nth-of-type(1):before {
+            content: "Namn:\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+        }
+
+        .tdEdit:nth-of-type(2):before {
+            content: "Adress:\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+        }
+
+        .tdEdit:nth-of-type(3):before {
+            content: "Öppettider:\00a0\00a0";
+        }
+
+        .tdEdit:nth-of-type(4):before {
+            content: "Beskrivning:";
+        }
+
+        .tdEdit:nth-of-type(5):before {
+            content: "";
+        }
+
+        .tdEdit:nth-of-type(6):before {
+            content: "";
+        }
+
+    .editButton, .saveButton, #deleteButton {
+        width: 200px;
+    }
+
+}
