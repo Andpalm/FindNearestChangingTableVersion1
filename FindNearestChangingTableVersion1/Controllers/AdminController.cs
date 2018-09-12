@@ -29,7 +29,7 @@ namespace FindNearestChangingTableVersion1.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> AdminIndex(AdminIndexViewModel model)
+        public async Task<IActionResult> AddAdmin(AdminIndexViewModel model)
         {
             bool correctModel = TryValidateModel(model);
             if (correctModel)
@@ -57,6 +57,64 @@ namespace FindNearestChangingTableVersion1.Controllers
             }
             else
                 return View();
+        }
+        [HttpPost]
+        public IActionResult DeleteUser(AdminIndexViewModel model)
+        {
+            bool correctModel = TryValidateModel(model);
+            if (correctModel)
+            {
+                if (model != null)
+                {
+                    bool userDeleted = AdminIndexViewModel.DeleteUser(context, model);
+                    if (userDeleted)
+                    {
+                        ViewData["Message"] = $"{model.Email} har tagits bort som användare";
+                        return View("AdminIndex");
+                    }
+                    else
+                    {
+                        ViewData["Message"] = "Det finns ingen användare med den här emailen";
+                        return View("AdminIndex");
+                    }
+                }
+                else
+                {
+                    ViewData["Message"] = "Något gick fel försök igen";
+                    return View("AdminIndex");
+                }
+            }
+            else
+                return View("AdminIndex");
+        }
+        [HttpPost]
+        public IActionResult RemoveAdmin(AdminIndexViewModel model)
+        {
+            bool correctModel = TryValidateModel(model);
+            if (correctModel)
+            {
+                if (model != null)
+                {
+                    bool adminRemoved = AdminIndexViewModel.RemoveAdmin(context, model);
+                    if (adminRemoved)
+                    {
+                        ViewData["Message"] = $"{model.Email} har fråntagits adminrättigheter";
+                        return View("AdminIndex");
+                    }
+                    else
+                    {
+                        ViewData["Message"] = $"Antingen finns användaren {model.Email} eller så saknar den adminrättigheter";
+                        return View("AdminIndex");
+                    }
+                }
+                else
+                {
+                    ViewData["Message"] = "Något gick fel försök igen";
+                    return View("AdminIndex");
+                }
+            }
+            else
+                return View("AdminIndex");
         }
     }
 }

@@ -30,6 +30,23 @@
     border-color: black;
     border-width: 1px;
 }
+@media screen and (max-width: 500px) {
+    #map {
+        min-height: 500px;
+    }
+    body {
+        padding-top: 35px;
+    }
+}
+@media screen and (max-width: 400px) {
+    #map {
+        min-height: 400px;
+    }
+
+    body {
+        padding-top: 30px;
+    }
+}
 
 
 

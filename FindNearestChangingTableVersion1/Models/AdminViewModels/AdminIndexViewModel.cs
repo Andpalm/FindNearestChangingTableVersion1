@@ -11,8 +11,9 @@ namespace FindNearestChangingTableVersion1.Models.AdminViewModels
     public class AdminIndexViewModel
     {
         [Display(Name = "Email")]
-        [Required(ErrorMessage = "Du måste email på användaren som ska tilldelas Admin rättigheter")]
+        [Required(ErrorMessage = "Du måste ange email på användaren som ska tilldelas admin rättigheter")]
         public string Email { get; set; }
+        
 
         public AdminIndexViewModel()
         {
@@ -22,6 +23,40 @@ namespace FindNearestChangingTableVersion1.Models.AdminViewModels
         public AdminIndexViewModel(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
+        }
+        internal static bool DeleteUser(ApplicationDbContext context, AdminIndexViewModel model)
+        {
+            bool userDeleted;
+            var user = context.Users.Where(l => l.Email == model.Email).FirstOrDefault();
+            if (user != null)
+            {
+                context.Remove(user);
+                context.SaveChanges();
+                userDeleted = true;
+            }
+            else
+                userDeleted = false;
+            return userDeleted;
+        }
+        internal static bool RemoveAdmin(ApplicationDbContext context, AdminIndexViewModel model)
+        {
+            bool adminRemoved;
+            var admin = context.Users.Where(a => a.Email == model.Email).FirstOrDefault();
+            if (admin != null)
+            {
+                var adminStatus = context.UserRoles.Where(a => a.UserId == admin.Id).FirstOrDefault();
+                if (adminStatus != null)
+                {
+                    context.Remove(adminStatus);
+                    context.SaveChanges();
+                    adminRemoved = true;
+                }
+                else
+                    adminRemoved = false;
+            }
+            else
+                adminRemoved = false;
+            return adminRemoved;
         }
     }
 }
