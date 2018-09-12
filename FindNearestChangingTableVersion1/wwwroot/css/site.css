@@ -22,7 +22,6 @@
 }
 
 
-
 #map {
     height: 100%;
     min-height: 700px;
@@ -31,18 +30,16 @@
     border-width: 1px;
 }
 
-#tableEdit {
+#tableEdit, #tableNear {
     width: 100%;
     border-collapse: collapse;
 }
 
-.thEdit {
-    background: #333;
-    color: white;
+.thEdit, .thNear {
     font-weight: bold;
 }
 
-.tdEdit, .thEdit {
+.tdEdit, .thEdit, .thNear, .tdNear {
     padding: 6px;
     border: 1px solid #ccc;
     text-align: left;
@@ -75,22 +72,23 @@
 @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
 
     /* Force table to not be like tables anymore */
-    #tableEdit, .theadEdit, .tbodyEdit, .thEdit, .tdEdit, .trEdit {
+    #tableEdit, .theadEdit, .tbodyEdit, .thEdit, .tdEdit, .trEdit,
+    #tableNear, .theadNear, .tbodyNear, .thNear, .tdNear, .trNear    {
         display: block !important;
     }
 
         /* Hide table headers (but not display: none;, for accessibility) */
-        .theadEdit .trEdit {
+        .theadEdit .trEdit, .theadNear, .trNear {
             position: absolute;
             top: -9999px;
             left: -9999px;
         }
 
-    .trEdit {
+    .trEdit, .trNear {
         border: 1px solid #ccc;
     }
 
-    .tdEdit {
+    .tdEdit, .tdNear {
         /* Behave  like a "row" */
         border: none;
         border-bottom: 1px solid #eee;
@@ -98,7 +96,7 @@
         padding-left: 50%;
     }
 
-        .tdEdit:before {
+        .tdEdit:before, .tdNear:before {
             /* Now like a table header */
             /* Top/left values mimic padding */
             top: 6px;
@@ -112,32 +110,36 @@
         /*
 	Label the data
 	*/
-        .tdEdit:nth-of-type(1):before {
+        .tdEdit:nth-of-type(1):before, .tdNear:nth-of-type(1):before {
             content: "Namn:\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
         }
 
-        .tdEdit:nth-of-type(2):before {
+        .tdEdit:nth-of-type(2):before, .tdNear:nth-of-type(2):before {
             content: "Adress:\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
         }
 
-        .tdEdit:nth-of-type(3):before {
+        .tdEdit:nth-of-type(3):before, .tdNear:nth-of-type(3):before {
             content: "Öppettider:\00a0\00a0";
         }
 
-        .tdEdit:nth-of-type(4):before {
-            content: "Beskrivning:";
+        .tdEdit:nth-of-type(4):before, .tdNear:nth-of-type(4):before {
+            content: "Kommentar:";
         }
 
         .tdEdit:nth-of-type(5):before {
             content: "";
         }
+        .tdNear:nth-of-type(5):before {
+            content: "Avstånd:\00a0\00a0\00a0\00a0\00a0\00a0";
+        }
 
-        .tdEdit:nth-of-type(6):before {
+        .tdEdit:nth-of-type(6):before, .tdNear:nth-of-type(6):before {
             content: "";
         }
 
-    .editButton, .saveButton, #deleteButton {
+    .editButton, .saveButton, #deleteButton, .buttonNear {
         width: 200px;
     }
-
 }
+
+
