@@ -16,11 +16,11 @@ namespace FindNearestChangingTableVersion1.Models.AdminViewModels
         public string Description { get; set; }
         public string Hours { get; set; }
 
-        internal static List<HandleLocationViewModel> GetLocations(NewHorizonsDBContext contextNH, AdminIndexViewModel model)
+        internal static List<HandleLocationViewModel> GetLocations(NewHorizonsDBContext contextNH, ApplicationDbContext context, AdminIndexViewModel model)
         {
             List<HandleLocationViewModel> locationList = new List<HandleLocationViewModel>();
-            
-            if(model.Name != null)
+
+            if (model.Name != null)
             {
                 var listDB = contextNH.Markers.Where(m => m.Name.Contains(model.Name)).ToList();
                 if (listDB != null)
@@ -36,32 +36,38 @@ namespace FindNearestChangingTableVersion1.Models.AdminViewModels
                             Description = m.Description,
                             UserID = m.UserID
                         });
-                        
+
                     }
                     return locationList;
                 }
                 else
                     return null;
             }
-            if (model.UserID != null)
+            if (model.Email != null)
             {
-                var listDB = contextNH.Markers.Where(m => m.UserID == model.UserID).ToList();
-                if (listDB != null)
+                var user = context.Users.Where(u => u.Email == model.Email).FirstOrDefault();
+                if (user != null)
                 {
-                    foreach (var m in listDB)
+                    var listDB = contextNH.Markers.Where(m => m.UserID == user.Id).ToList();
+                    if (listDB != null)
                     {
-                        locationList.Add(new HandleLocationViewModel()
+                        foreach (var m in listDB)
                         {
-                            ID = m.ID,
-                            Name = m.Name,
-                            Adress = m.Adress,
-                            Hours = m.Hours,
-                            Description = m.Description,
-                            UserID = m.UserID
-                        });
-                        
+                            locationList.Add(new HandleLocationViewModel()
+                            {
+                                ID = m.ID,
+                                Name = m.Name,
+                                Adress = m.Adress,
+                                Hours = m.Hours,
+                                Description = m.Description,
+                                UserID = m.UserID
+                            });
+
+                        }
+                        return locationList;
                     }
-                    return locationList;
+                    else
+                        return null;
                 }
                 else
                     return null;

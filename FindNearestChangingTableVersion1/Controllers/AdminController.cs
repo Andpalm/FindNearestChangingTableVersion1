@@ -124,7 +124,7 @@ namespace FindNearestChangingTableVersion1.Controllers
         {
             if (model != null)
             {
-                List<HandleLocationViewModel> locationList = HandleLocationViewModel.GetLocations(contextNH, model);
+                List<HandleLocationViewModel> locationList = HandleLocationViewModel.GetLocations(contextNH, context, model);
                 if (locationList != null)
                     return View(locationList);
                 else
