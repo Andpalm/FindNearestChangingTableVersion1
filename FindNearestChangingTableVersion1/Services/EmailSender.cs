@@ -24,7 +24,7 @@ namespace FindNearestChangingTableVersion1.Services
             mail.IsBodyHtml = true;
             mail.Subject = subject;
             mail.Body = message;
-            mail.From = new MailAddress("nearestchangingtable@gmail.com", "Hitta närmsta skötbord");
+            mail.From = new MailAddress("nearestchangingtable@gmail.com", "Sköt dig själv");
             mail.To.Add(new MailAddress(email));
 
             smtpClient.Send(mail);

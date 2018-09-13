@@ -11,8 +11,8 @@ namespace FindNearestChangingTableVersion1.Services
     {
         public static Task SendEmailConfirmationAsync(this IEmailSender emailSender, string email, string link)
         {
-            return emailSender.SendEmailAsync(email, "Confirm your email",
-                $"Please confirm your account by clicking this link: <a href='{link}'>link</a>");
+            return emailSender.SendEmailAsync(email, "Bekräfta ditt lösenord",
+                $"Var vänlig att bekräfta din E-post genom att klicka på <a href='{link}'>länken</a>");
         }
     }
 }
