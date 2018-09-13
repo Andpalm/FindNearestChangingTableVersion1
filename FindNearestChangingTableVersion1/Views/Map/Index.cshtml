@@ -82,6 +82,20 @@
 
                         markers.push(marker);
                     }
+                    else {
+                        clearMarkers();
+                        marker = new google.maps.Marker({
+                            position: event.latLng,
+                            map: map
+                        });
+
+                        google.maps.event.addListener(marker, 'click', function () {
+                            inputWindow.open(map, marker);
+                        });
+
+                        markers.push(marker);
+                    }
+
                 });
 
                 $.get("/Map/GetAllLocations")
@@ -149,7 +163,7 @@
                     markers[i].setMap(null);
                 }
                 markers = [];
-                initMap();
+                //initMap();
             }
 
             function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -180,10 +194,7 @@
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                         var userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                        //var pos = {
-                        //    lat: position.coords.latitude,
-                        //    lng: position.coords.longitude
-                        //};
+                      
                         sessionStorage.setItem("userPosition", userLocation);
                         map.setCenter(userLocation);
 
