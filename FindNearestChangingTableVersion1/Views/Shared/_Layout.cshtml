@@ -19,7 +19,7 @@
 </head>
 <body>
     <nav style="height: 70px;background-color:#119979" class="navbar navbar-inverse navbar-fixed-top"> @*(grå färg 7e9988)*@
-        <div class="container">
+        <div class="container" style="background-color:#119979">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -31,8 +31,8 @@
                     <img style="max-width:230px; margin-top: -70px; margin-left:20px"; src="~/images/SkötbordLogoNamn.png" /> 
                 </a>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav"style="margin-top: 18px; background-color:#119979">
+            <div class="navbar-collapse collapse" >
+                <ul class="nav navbar-nav"style="margin-top: 18px;">
                     <li><a asp-area="" asp-controller="Map" asp-action="NearestLocations" style="color:black; font-size:large; font-weight:bold;">Närmast dig</a></li>
                     @if(User.Identity.IsAuthenticated)
                     {
