@@ -8,6 +8,25 @@
 
 <div id="map"></div>
 
+@if(!User.Identity.IsAuthenticated)
+{
+    <div class="information">
+        <h2>Skapa ett konto</h2>
+        <p>
+            Syftet med sidan är att personer med blöjbarn lätt ska kunna se på en karta var närmsta skötbord finns.
+            Tanken är att ni som använder sidan själva ska lägga till platser som ni känner till så <a asp-area="" asp-controller="Account" asp-action="Register">skapa gärna ett konto</a> och lägg till dina egna platser som andra användare också kan se.
+        </p>
+    </div>
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="information">
+        <h2>Lägg till en ny plats</h2>
+        <p>För att lägga till en egen plats som du och andra användare kan lägga till klicka på kartan där platsen finns. Klicka på markeringen som dyker upp, fyll i informationen och tryck på sparaknappen. För att redigera dina platser gå in på <a asp-area="" asp-controller="User" asp-action="EditLocation">dina platser</a>.</p>
+    </div>
+}
+
 
 @section Scripts{
     @if (User.Identity.IsAuthenticated)
@@ -26,7 +45,7 @@
                 "<tr><td>Adress:</td> <td><input type='text' id='address' /> </td> </tr>" +
                 '<tr><td>Öppettider:</td><td><input type="text" id="hours" /></td></tr>' +
                 '<tr><td>Kommentar: </td><td><textarea name="description" rows="5" cols="20" id="description" ></textarea></td></tr>' +
-                "<tr><td></td><td><input type='button' value='Save' onclick='saveData()' /><input onclick='clearMarkers()' type=button value='Ta bort'></td></tr>" +
+                "<tr><td></td><td><input type='button' value='Spara' onclick='saveData()' /><input onclick='clearMarkers()' type=button value='Ta bort'></td></tr>" +
                 "</table>" +
                 "</div>";
 
@@ -140,10 +159,11 @@
                 var description = document.getElementById("description").value;
                 var latlng = marker.getPosition();
 
+                inputWindow.close();
+
                 $.get("/Map/AddLocationToMap/" + name + "/" + address + "/" + hours + "/" + description + "/" + latlng)
                     .done(function (data) {
                         if (data) {
-                            inputWindow.close();
                             messageWindow.open(map, marker);
                         }
                     }).fail(function (err) {

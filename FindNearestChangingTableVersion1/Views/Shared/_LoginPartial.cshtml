@@ -8,10 +8,10 @@
 {
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right" style="margin-top: 18px;">
-            <li>
+            <li style="background-color:#119979;">
                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage" style="color:black; font-size:medium; font-weight:bold;">Hej @UserManager.GetUserName(User)!</a>
             </li>
-            <li>
+            <li style="background-color:#119979;">
                 <button type="submit" class="btn btn-link navbar-btn navbar-link" style="color:black; font-size:large; font-weight:bold;">Logga ut</button>
             </li>
         </ul>
@@ -20,7 +20,7 @@
 else
 {
     <ul class="nav navbar-nav navbar-right" style="margin-top: 18px; background-color:#119979;">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register"style="color:black;font-size:large;font-weight:bold;">Registrering</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login" style="color:black;font-size:large;font-weight:bold;">Logga in</a></li>
+        <li style="background-color:#119979;"><a asp-area="" asp-controller="Account" asp-action="Register"style="color:black;font-size:large;font-weight:bold;">Skapa konto</a></li>
+        <li style="background-color:#119979;"><a asp-area="" asp-controller="Account" asp-action="Login" style="color:black;font-size:large;font-weight:bold;">Logga in</a></li>
     </ul>
 }
