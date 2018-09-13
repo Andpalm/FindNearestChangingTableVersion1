@@ -10,20 +10,10 @@ namespace FindNearestChangingTableVersion1.Models.AdminViewModels
 {
     public class AdminIndexViewModel
     {
-        [Display(Name = "Email")]
-        [Required(ErrorMessage = "Du måste ange email på användaren som ska tilldelas admin rättigheter")]
         public string Email { get; set; }
-        
+        public string UserID { get; set; }
+        public string Name { get; set; }
 
-        public AdminIndexViewModel()
-        {
-        }
-
-        private UserManager<ApplicationUser> userManager;
-        public AdminIndexViewModel(UserManager<ApplicationUser> userManager)
-        {
-            this.userManager = userManager;
-        }
         internal static bool DeleteUser(ApplicationDbContext context, AdminIndexViewModel model)
         {
             bool userDeleted;

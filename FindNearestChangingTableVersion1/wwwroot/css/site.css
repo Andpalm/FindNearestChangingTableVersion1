@@ -30,7 +30,7 @@
     border-width: 1px;
 }
 
-#tableEdit, #tableNear {
+#tableEdit, #tableNear, #tableHandle {
     width: 100%;
     border-collapse: collapse;
     background-color: rgba(255,255,255,0.3);
@@ -67,7 +67,7 @@
 
     /* Force table to not be like tables anymore */
     #tableEdit, .theadEdit, .tbodyEdit, .thEdit, .tdEdit, .trEdit,
-    #tableNear, .theadNear, .tbodyNear, .thNear, .tdNear, .trNear    {
+    #tableNear, .theadNear, .tbodyNear, .thNear, .tdNear, .trNear, #tableHandle    {
         display: block !important;
         font-weight: normal;
     }
@@ -135,7 +135,7 @@
             content: "";
         }
 
-    .editButton, .saveButton, #deleteButton, .buttonNear {
+    .editButton, .saveButton, #deleteButton, .buttonNear, #deleteButtonH {
         width: 200px;
     }
 }

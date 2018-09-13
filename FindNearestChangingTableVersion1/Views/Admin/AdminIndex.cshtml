@@ -5,7 +5,8 @@
 }
 
 
-<h2>Admin</h2>
+<h3>Användarfunktioner</h3>
+<h3></h3>
 <h4>Lägg till en ny admin</h4>
 <form asp-action="AddAdmin" asp-controller="Admin">
     <label asp-for="Email"></label>
@@ -27,5 +28,22 @@
     <input type="submit" />
     <div asp-validation-summary="All"></div>
 </form>
+<h3>Redigera eller ta bort skötbord</h3>
+<h3></h3>
+<h4>Sök efter namn</h4>
+<form asp-action="HandleLocation" asp-controller="Admin">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" />
+    <input type="submit" />
+    <div asp-validation-summary="All"></div>
+</form>
+<h4>Sök efter alla skötbord en viss användare har lagt till</h4>
+<form asp-action="HandleLocation" asp-controller="Admin">
+    <label asp-for="UserID"></label>
+    <input asp-for="UserID" />
+    <input type="submit" />
+    <div asp-validation-summary="All"></div>
+</form>
 
 <h4>@ViewData["Message"]</h4>
+

@@ -15,10 +15,12 @@ namespace FindNearestChangingTableVersion1.Controllers
     public class AdminController : Controller
     {
         private ApplicationDbContext context;
+        private NewHorizonsDBContext contextNH;
         private UserManager<ApplicationUser> userManager;
 
-        public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AdminController(ApplicationDbContext context, NewHorizonsDBContext contextNH, UserManager<ApplicationUser> userManager)
         {
+            this.contextNH = contextNH;
             this.context = context;
             this.userManager = userManager;
         }
@@ -115,6 +117,46 @@ namespace FindNearestChangingTableVersion1.Controllers
             }
             else
                 return View("AdminIndex");
+        }
+
+        [HttpPost]
+        public IActionResult HandleLocation(AdminIndexViewModel model)
+        {
+            if (model != null)
+            {
+                List<HandleLocationViewModel> locationList = HandleLocationViewModel.GetLocations(contextNH, model);
+                if (locationList != null)
+                    return View(locationList);
+                else
+                {
+                    ViewData["Message"] = "Kunde inte hitta några skötbord som matchar din sökning";
+                    return View("AdminIndex");
+                }
+            }
+            else
+            {
+                ViewData["Message"] = "Något gick fel försök igen";
+                return View("AdminIndex");
+            }
+        }
+        
+        [Route("Admin/Delete/{id}")]
+        [HttpGet]
+        public JsonResult Delete(int id)
+        {
+            bool locationDeleted = HandleLocationViewModel.DeleteMarker(contextNH, id);
+            return new JsonResult(locationDeleted);
+        }
+
+        [Route("Admin/Update/{locID}/{newName}/{newAdress}/{newHours}/{newDescription}")]
+        [HttpGet]
+        public JsonResult Update(int locID, string newName, string newAdress, string newHours, string newDescription)
+        {
+            HandleLocationViewModel model = new HandleLocationViewModel()
+            { ID = locID, Name = newName, Adress = newAdress, Hours = newHours, Description = newDescription };
+            bool locationUpdated = HandleLocationViewModel.UpdateMarker(contextNH, model);
+
+            return new JsonResult(locationUpdated);
         }
     }
 }
