@@ -33,10 +33,14 @@
 #tableEdit, #tableNear {
     width: 100%;
     border-collapse: collapse;
+    background-color: rgba(255,255,255,0.3);
+    font-weight: bold;
 }
 
 .thEdit, .thNear {
-    font-weight: bold;
+    background-color: #993366;
+    opacity: 0.8;
+    color: white;
 }
 
 .tdEdit, .thEdit, .thNear, .tdNear {
@@ -52,10 +56,6 @@
 
     body {
         padding-top: 35px;
-    }
-
-    #editTable {
-        display: block;
     }
 }
 
@@ -75,6 +75,7 @@
     #tableEdit, .theadEdit, .tbodyEdit, .thEdit, .tdEdit, .trEdit,
     #tableNear, .theadNear, .tbodyNear, .thNear, .tdNear, .trNear    {
         display: block !important;
+        font-weight: normal;
     }
 
         /* Hide table headers (but not display: none;, for accessibility) */
@@ -82,6 +83,9 @@
             position: absolute;
             top: -9999px;
             left: -9999px;
+        }
+        .thEdit, .thNear {
+            font-weight: bold;
         }
 
     .trEdit, .trNear {
